@@ -4,11 +4,12 @@
 
 { config, pkgs, ... }:
 
-{
+let 
+  kt = import ./my-packages/all-packages.nix pkgs;
+in {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      ./dcp-t500w/config.nix
     ];
 
   # Bootloader.
@@ -101,22 +102,61 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    ghidra
     file
     neofetch
-    libreoffice
     vim
     wget
     coreutils-full
     gnumake
+    git
     libgcc
     gcc
+    (python312.withPackages (p: [ p.sympy p.pip ]))
+    libreoffice
+    ghidra
     discord
     vscode
     vlc
-    git
     simple-scan
+    # kt.upm
   ];
+
+  # Enable CUPS to print documents.
+  services.printing.enable = true;
+  # services.printing.logLevel = "debug";
+  # services.avahi = {
+  #   enable = true;
+  #   nssmdns4 = true;
+  #   openFirewall = true;
+  # };
+
+  # Printer
+  services.printing.drivers = [
+    kt.dcpt500wlpr
+    kt.dcpt500w-cupswrapper
+  ];
+
+  hardware.printers = {
+    ensurePrinters = [
+      {
+        name = "DCP-T500W";
+        deviceUri = "lpd://192.168.100.3/BINARY_P1";
+        model = "brother_dcpt500w_printer_en.ppd";
+      }
+    ];
+  };
+
+  # Scanner
+  hardware.sane.enable = true;
+  hardware.sane.brscan5 = {
+    enable = true;
+    netDevices = {
+      brother = {
+        ip = "192.168.100.3";
+        model = "DCP-T500W"; 
+      };      
+    };
+  };
 
   virtualisation.docker.enable = true;
 
