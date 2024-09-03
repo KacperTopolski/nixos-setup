@@ -27,11 +27,11 @@ in rec {
       patchelf --set-interpreter $(cat $NIX_CC/nix-support/dynamic-linker) \
       $out/opt/brother/Printers/${model}/lpd/br${model}filter
 
-      g++ ${./str_fix.cpp} -ostr_fix
-      ./str_fix /opt $out \
+      g++ ${./fix.cc} -ofixcc
+      ./fixcc /opt $out \
       $out/opt/brother/Printers/${model}/lpd/br${model}filter \
       $out/opt/brother/Printers/${model}/lpd/br${model}filter-mod
-      rm str_fix
+      rm fixcc
 
       mv $out/opt/brother/Printers/${model}/lpd/br${model}filter-mod \
       $out/opt/brother/Printers/${model}/lpd/br${model}filter

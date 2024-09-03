@@ -151,7 +151,7 @@ in {
     ensurePrinters = [
       {
         name = "DCP-T500W";
-        deviceUri = "lpd://192.168.100.3/BINARY_P1";
+        deviceUri = "lpd://192.168.100.6/BINARY_P1";
         model = "brother_dcpt500w_printer_en.ppd";
       }
     ];
@@ -163,7 +163,7 @@ in {
     enable = true;
     netDevices = {
       brother = {
-        ip = "192.168.100.3";
+        ip = "192.168.100.6";
         model = "DCP-T500W"; 
       };      
     };
