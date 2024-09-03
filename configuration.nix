@@ -7,10 +7,11 @@
 let 
   kt = import ./my-packages/all-packages.nix pkgs;
 in {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+  imports = [ # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+  ];
+
+  nix.settings.experimental-features = "nix-command flakes";
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -102,15 +103,19 @@ in {
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    pciutils
     file
+    htop
     neofetch
     vim
     wget
     coreutils-full
+    cntr
     gnumake
     git
     libgcc
     gcc
+    jdk21
     (python312.withPackages (p: [ p.sympy p.pip ]))
     libreoffice
     ghidra
@@ -118,8 +123,14 @@ in {
     vscode
     vlc
     simple-scan
-    # kt.upm
+    kt.upm
+    mangohud
+    protonup # you have to run this
   ];
+
+  programs.vim.defaultEditor = true;
+
+  virtualisation.docker.enable = true;
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
@@ -158,30 +169,35 @@ in {
     };
   };
 
-  virtualisation.docker.enable = true;
+  services.xserver.videoDrivers = ["nvidia"];
+  # services.xserver.videoDrivers = ["amdgpu"];
 
-  #services.printing.drivers = [ 
-  #  pkgs.mfcj470dwlpr 
-  #  pkgs.mfcj470dw-cupswrapper 
-  #  pkgs.mfc465cnlpr 
-  #  pkgs.mfc465cncupswrapper
-  #  pkgs.dcp9020cdwlpr
-  #  pkgs.dcp375cwlpr
-  #  pkgs.cups-brother-hll2375dw
-  #  pkgs.cups-brother-hl3140cw
-  #  pkgs.cups-brother-hll3230cdw
-  #  pkgs.cups-brother-hll2350dw
-  #  pkgs.brgenml1cupswrapper
-  #  pkgs.mfcj880dwcupswrapper
-  #  pkgs.hll2390dw-cups
-  #];
+  hardware.nvidia.modesetting.enable = true;
+
+  hardware.nvidia.prime = {
+    sync.enable = true;
+
+    # integrated
+    # amdgpuBusId = "PCI:6:0:0"
+    intelBusId = "PCI:0:2:0";
+
+    # dedicated
+    nvidiaBusId = "PCI:1:0:0";
+  };
+  
+  environment.sessionVariables = {
+    STEAM_EXTRA_COMPAT_TOOLS_PATHS =
+      "\${HOME}/.steam/root/compatibilitytools.d";
+  };
 
   programs.steam = {
     enable = true;
 #    remotePlay.opensFirewall = true; # Open ports in the firewall for Steam Remote Play
     dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
     localNetworkGameTransfers.openFirewall = true; # Open ports in the firewall for Steam Local Network Game Transfers
+    gamescopeSession.enable = true;
   };
+  programs.gamemode.enable = true;
 
 # home mananger todo
 #  programs.git = {
