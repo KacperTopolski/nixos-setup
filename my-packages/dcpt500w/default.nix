@@ -54,6 +54,15 @@ in rec {
           ]
         }
     '';
+
+    meta = with lib; {
+      homepage = "http://www.brother.com/";
+      description = "Brother ${model} printer driver";
+      sourceProvenance = with sourceTypes; [ binaryNativeCode ];
+      license = licenses.unfree;
+      platforms = platforms.linux;
+      maintainers = with maintainers; [ ];
+    };
   };
 
   cupswrapper = stdenv.mkDerivation {
@@ -81,5 +90,14 @@ in rec {
       mkdir -p $out/share/cups/model
       ln -s $out/opt/brother/Printers/${model}/cupswrapper/brother_${model}_printer_en.ppd $out/share/cups/model/
     '';
+
+    meta = with lib; {
+      homepage = "http://www.brother.com/";
+      description = "Brother ${model} printer CUPS wrapper driver";
+      sourceProvenance = with sourceTypes; [ binaryNativeCode ];
+      license = licenses.unfree;
+      platforms = platforms.linux;
+      maintainers = with maintainers; [ ];
+    };
   };
 }

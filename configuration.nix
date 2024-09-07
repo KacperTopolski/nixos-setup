@@ -6,9 +6,11 @@
 
 let 
   kt = import ./my-packages/all-packages.nix pkgs;
+  home-manager = builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/release-24.05.tar.gz";
 in {
-  imports = [ # Include the results of the hardware scan.
+  imports = [
     ./hardware-configuration.nix
+    (import "${home-manager}/nixos")
   ];
 
   nix.settings.experimental-features = "nix-command flakes";
@@ -16,6 +18,7 @@ in {
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.supportedFilesystems = [ "ntfs" ];
 
   networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -58,10 +61,8 @@ in {
     variant = "";
   };
 
-  # Configure console keymap
   console.keyMap = "pl2";
 
-  # Enable sound with pipewire.
   hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
@@ -69,18 +70,11 @@ in {
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
-    # If you want to use JACK applications, uncomment this
-    #jack.enable = true;
-
-    # use the example session manager (no others are packaged yet so this is enabled by default,
-    # no need to redefine it in your config for now)
-    #media-session.enable = true;
   };
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.kacper = {
     isNormalUser = true;
     description = "kacper";
@@ -94,14 +88,10 @@ in {
   services.displayManager.autoLogin.enable = true;
   services.displayManager.autoLogin.user = "kacper";
 
-  # Install firefox.
   programs.firefox.enable = true;
 
-  # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
   environment.systemPackages = with pkgs; [
     pciutils
     file
@@ -126,6 +116,9 @@ in {
     kt.upm
     mangohud
     protonup # you have to run this
+    libsForQt5.booth
+    localsend
+    dconf2nix
   ];
 
   programs.vim.defaultEditor = true;
@@ -199,17 +192,26 @@ in {
   };
   programs.gamemode.enable = true;
 
-# home mananger todo
-#  programs.git = {
-#    enable = true;
-#    userName  = "John Doe";
-#    userEmail = "johndoe@example.com";
-#    aliases = {
-#      co = "checkout";
-#      st = "status";
-#    };
-#  };
-
+  home-manager.users.kacper = {
+    dconf.settings = {
+      "org/cinnamon/desktop/keybindings/wm" = {
+        switch-to-workspace-left = [ "<Primary><Super>Left" ];
+        switch-to-workspace-right = [ "<Primary><Super>Right" ];
+        switch-to-workspace-up = [ "<Primary><Super>Up" ];
+        switch-to-workspace-down = [ "<Primary><Super>Down" ];
+      };
+    };
+    programs.git = {
+      enable = true;
+      userName  = "Kacper Topolski";
+      userEmail = "kacpertopolski@op.pl";
+      aliases = {
+        co = "checkout";
+        st = "status";
+      };
+    };
+    home.stateVersion = "24.05";
+  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
