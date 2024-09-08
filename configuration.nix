@@ -4,7 +4,7 @@
 
 { config, pkgs, ... }:
 
-let 
+let
   kt = import ./my-packages/all-packages.nix pkgs;
   home-manager = builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/release-24.05.tar.gz";
 in {
@@ -102,7 +102,6 @@ in {
     coreutils-full
     cntr
     gnumake
-    git
     libgcc
     gcc
     jdk21
@@ -110,15 +109,16 @@ in {
     libreoffice
     ghidra
     discord
-    vscode
     vlc
     simple-scan
     kt.upm
+    kt.cp-setup
     mangohud
     protonup # you have to run this
     libsForQt5.booth
     localsend
     dconf2nix
+    # texlive.combined.scheme-full
   ];
 
   programs.vim.defaultEditor = true;
@@ -157,8 +157,8 @@ in {
     netDevices = {
       brother = {
         ip = "192.168.100.6";
-        model = "DCP-T500W"; 
-      };      
+        model = "DCP-T500W";
+      };
     };
   };
 
@@ -177,7 +177,7 @@ in {
     # dedicated
     nvidiaBusId = "PCI:1:0:0";
   };
-  
+
   environment.sessionVariables = {
     STEAM_EXTRA_COMPAT_TOOLS_PATHS =
       "\${HOME}/.steam/root/compatibilitytools.d";
@@ -192,6 +192,7 @@ in {
   };
   programs.gamemode.enable = true;
 
+  home-manager.useGlobalPkgs = true;
   home-manager.users.kacper = {
     dconf.settings = {
       "org/cinnamon/desktop/keybindings/wm" = {
@@ -199,6 +200,9 @@ in {
         switch-to-workspace-right = [ "<Primary><Super>Right" ];
         switch-to-workspace-up = [ "<Primary><Super>Up" ];
         switch-to-workspace-down = [ "<Primary><Super>Down" ];
+      };
+      "org/cinnamon/desktop/keybindings/media-keys" = {
+        area-screenshot-clip = [ "<Shift><Super>s" ];
       };
     };
     programs.git = {
@@ -209,6 +213,50 @@ in {
         co = "checkout";
         st = "status";
       };
+    };
+    programs.vscode = {
+      enable = true;
+      enableUpdateCheck = false;
+      enableExtensionUpdateCheck = false;
+      mutableExtensionsDir = false;
+
+      # Extensions
+      extensions = (with pkgs.vscode-extensions; [
+        ms-vscode.cpptools
+        ms-vscode-remote.remote-ssh
+        mhutchie.git-graph
+        jnoortheen.nix-ide
+      ]);
+
+      userSettings = {
+        "editor.fontSize" = 12;
+        "editor.fontFamily" = "'Jetbrains Mono', 'monospace', monospace";
+        "terminal.integrated.fontSize" = 12;
+        "terminal.integrated.fontFamily" = "'JetBrainsMono Nerd Font', 'monospace', monospace";
+        "window.zoomLevel" = 1;
+        "workbench.startupEditor" = "none";
+        "explorer.compactFolders" = false;
+        "files.trimTrailingWhitespace" = true;
+        "files.trimFinalNewlines" = true;
+        "files.insertFinalNewline" = true;
+        "diffEditor.ignoreTrimWhitespace" = false;
+        "extensions.ignoreRecommendations" = true;
+        "editor.selectionClipboard" = false;
+      };
+
+      keybindings = [
+        {
+          key = "ctrl+c";
+          command = "workbench.action.terminal.copySelection";
+          when = "terminalFocus && terminalProcessSupported && terminalTextSelected";
+        }
+        {
+          key = "ctrl+v";
+          command = "workbench.action.terminal.paste";
+          when = "terminalFocus && terminalProcessSupported";
+        }
+      ];
+
     };
     home.stateVersion = "24.05";
   };
