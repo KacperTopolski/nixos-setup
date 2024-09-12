@@ -113,12 +113,14 @@ in {
     simple-scan
     kt.upm
     kt.cp-setup
+    kt.utils
     mangohud
     protonup # you have to run this
     libsForQt5.booth
     localsend
     dconf2nix
     # texlive.combined.scheme-full
+    #activate linux
   ];
 
   programs.vim.defaultEditor = true;
@@ -201,8 +203,10 @@ in {
         switch-to-workspace-up = [ "<Primary><Super>Up" ];
         switch-to-workspace-down = [ "<Primary><Super>Down" ];
       };
-      "org/cinnamon/desktop/keybindings/media-keys" = {
-        area-screenshot-clip = [ "<Shift><Super>s" ];
+      "org/cinnamon/desktop/keybindings/custom-keybindings/custom0" = {
+        binding = [ "<Shift><Super>s" ];
+        command = "screentool";
+        name = "screentool";
       };
     };
     programs.git = {

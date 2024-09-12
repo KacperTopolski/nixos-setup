@@ -21,10 +21,10 @@ void dump(auto... x) { (( cerr << x << ", " ), ...) << '\n'; }
 #define deb(...) 0
 #endif
 int32_t main() {
-	cin.tie(0)->sync_with_stdio(0);
-	cout << fixed << setprecision(10);
-	#ifdef LOC
-	cout.flush(); cerr << "- - - - - - - - -\n";
-	(void)!system("grep VmPeak /proc/$PPID/status | sed s/....kB/\' MB\'/1 >&2"); // 4x.kB ....kB
-	#endif
+    cin.tie(0)->sync_with_stdio(0);
+    cout << fixed << setprecision(10);
+    #ifdef LOC
+    cout.flush(); cerr << "- - - - - - - - -\n";
+    (void)!system("grep VmPeak /proc/$PPID/status | sed s/....kB/\' MB\'/1 >&2"); // 4x.kB ....kB
+    #endif
 }
