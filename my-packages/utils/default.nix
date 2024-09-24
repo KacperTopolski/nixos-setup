@@ -4,6 +4,7 @@ let
   screentool = pkgs.writeShellScriptBin "screentool" ''
     loc=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c10)
     ${pkgs.gnome.gnome-screenshot}/bin/gnome-screenshot -caf /tmp/$loc.png
+    ls /tmp/$loc.png || exit
     ${pkgs.cinnamon.xviewer}/bin/xviewer -n /tmp/$loc.png
     rm /tmp/$loc.png
   '';

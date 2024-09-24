@@ -120,8 +120,14 @@ in {
     localsend
     dconf2nix
     # texlive.combined.scheme-full
-    #activate linux
   ];
+
+  xdg.mime = {
+    enable = true;
+    defaultApplications = {
+      "inode/directory" = [ "nemo.desktop" ];
+    };
+  };
 
   programs.vim.defaultEditor = true;
 
@@ -165,24 +171,19 @@ in {
   };
 
   services.xserver.videoDrivers = ["nvidia"];
-  # services.xserver.videoDrivers = ["amdgpu"];
-
   hardware.nvidia.modesetting.enable = true;
-
   hardware.nvidia.prime = {
     sync.enable = true;
-
-    # integrated
-    # amdgpuBusId = "PCI:6:0:0"
+    # offload = {
+    #   enable = true;
+    #   enableOffloadCmd = true;
+    # };
     intelBusId = "PCI:0:2:0";
-
-    # dedicated
     nvidiaBusId = "PCI:1:0:0";
   };
 
   environment.sessionVariables = {
-    STEAM_EXTRA_COMPAT_TOOLS_PATHS =
-      "\${HOME}/.steam/root/compatibilitytools.d";
+    STEAM_EXTRA_COMPAT_TOOLS_PATHS = "\${HOME}/.steam/root/compatibilitytools.d";
   };
 
   programs.steam = {
@@ -225,12 +226,12 @@ in {
       mutableExtensionsDir = false;
 
       # Extensions
-      extensions = (with pkgs.vscode-extensions; [
+      extensions = with pkgs.vscode-extensions; [
         ms-vscode.cpptools
         ms-vscode-remote.remote-ssh
         mhutchie.git-graph
         jnoortheen.nix-ide
-      ]);
+      ];
 
       userSettings = {
         "editor.fontSize" = 12;
@@ -262,6 +263,11 @@ in {
       ];
 
     };
+
+    services.conky = {
+      enable = true;
+    };
+
     home.stateVersion = "24.05";
   };
 

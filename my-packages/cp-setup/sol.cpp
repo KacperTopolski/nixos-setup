@@ -20,11 +20,27 @@ void dump(auto... x) { (( cerr << x << ", " ), ...) << '\n'; }
 #else
 #define deb(...) 0
 #endif
+
+void solve() {
+
+}
+
 int32_t main() {
     cin.tie(0)->sync_with_stdio(0);
     cout << fixed << setprecision(10);
+
+    int z = 1;
+    // cin >> z;
+    rep(i, z) {
+        // cout << "Case #" << i + 1 << ": ";
+        solve();
+    }
+
     #ifdef LOC
     cout.flush(); cerr << "- - - - - - - - -\n";
     (void)!system("grep VmPeak /proc/$PPID/status | sed s/....kB/\' MB\'/1 >&2"); // 4x.kB ....kB
     #endif
+
+    cout << flush;
+    _Exit(0);
 }
