@@ -119,6 +119,7 @@ in {
     libsForQt5.booth
     localsend
     dconf2nix
+    conky
     # texlive.combined.scheme-full
   ];
 
@@ -130,6 +131,7 @@ in {
   };
 
   programs.vim.defaultEditor = true;
+  programs.nix-ld.enable = true;
 
   virtualisation.docker.enable = true;
 
@@ -265,7 +267,8 @@ in {
     };
 
     services.conky = {
-      enable = true;
+      # enable = true;
+      extraConfig = builtins.readFile ./conky.conf;
     };
 
     home.stateVersion = "24.05";
