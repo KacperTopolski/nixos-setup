@@ -122,25 +122,6 @@ in {
     # texlive.combined.scheme-full
   ];
 
-  # systemd.services.conky-service = {
-  #   # Unit = {
-  #   #   Description = "Conky - Lightweight system monitor";
-  #   #   After = [ "graphical-session.target" ];
-  #   # };
-  #   serviceConfig = {
-  #     Type = "simple";
-  #     User = "kacper";
-  #     Restart = "always";
-  #     RestartSec = "1";
-  #     Environment = "PATH=/run/current-system/sw/bin/";
-  #     ExecStartPre = "${pkgs.coreutils}/bin/sleep 1";
-  #     ExecStart = "${pkgs.bash}/bin/bash -c ${pkgs.conky}/bin/conky";
-  #     # ExecStart = "sh -c \"${pkgs.conky}/bin/conky -c /etc/nixos/conky.conf\"";
-  #   };
-  #   after = [ "graphical-session.target" ];
-  #   wantedBy = [ "multi-user.target" ];
-  # };
-
   xdg.mime = {
     enable = true;
     defaultApplications = {
