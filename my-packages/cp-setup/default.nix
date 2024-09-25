@@ -7,19 +7,25 @@ let
       cat ${./sol.cpp} > $var.cpp
     done
   '';
+  cphc = pkgs.writeShellScriptBin "cphc" ''
+    for var in "$@"
+    do
+      cat ${./hcsol.cpp} > $var.cpp
+    done
+  '';
   bits_file = pkgs.runCommand "bits_file" {} ''
     mkdir $out
     ${pkgs.gcc}/bin/g++ -H ${./sol.cpp} 2>&1 | grep "bits/stdc++.h" | tail -n 1 > $out/path
     cp $(cat $out/path) $out/stdc++.h
   '';
   c_command = ''
-    ${pkgs.gcc}/bin/g++ -std=c++20 -Wall -Wextra -Wshadow -Wconversion \
+    ${pkgs.gcc}/bin/g++ -std=c++23 -Wall -Wextra -Wshadow -Wconversion \
     -Wno-sign-conversion -Wfloat-equal -D_GLIBCXX_DEBUG \
     -D_GLIBCXX_DEBUG_PEDANTIC -fsanitize=address,undefined \
     -ggdb3 -DLOC \
   '';
   cf_command = ''
-    ${pkgs.gcc}/bin/g++ -std=c++20 -O3 -DLOC \
+    ${pkgs.gcc}/bin/g++ -std=c++23 -O3 -DLOC -DLOCF \
   '';
   c_bits = pkgs.runCommand "c_bits" {} ''
     mkdir -p $out/bits
@@ -39,5 +45,5 @@ let
   cf = pkgs.writeShellScriptBin "cf" "${cf_command} -I${cf_bits} $1.cpp -o$1";
 in symlinkJoin {
   name = "cp-setup";
-  paths = [ cpsol c cf ];
+  paths = [ cpsol cphc c cf ];
 }

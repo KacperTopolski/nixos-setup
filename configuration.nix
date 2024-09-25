@@ -260,6 +260,7 @@ in {
         "diffEditor.ignoreTrimWhitespace" = false;
         "extensions.ignoreRecommendations" = true;
         "editor.selectionClipboard" = false;
+        "C_Cpp.default.cppStandard" = "c++23";
       };
 
       keybindings = [

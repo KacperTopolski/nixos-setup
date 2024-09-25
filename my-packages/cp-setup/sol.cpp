@@ -15,8 +15,7 @@ auto SS = signal(6, [](int) { *(int *)0 = 0; });
 #define DTP(x, y) auto operator << (auto &o, auto a) -> decltype(y, o) { o << "("; x; return o << ")"; }
 DTP(o << a.st << ", " << a.nd, a.nd);
 DTP(for (auto i : a) o << i << ", ", all(a));
-void dump(auto... x) { (( cerr << x << ", " ), ...) << '\n'; }
-#define deb(x...) cerr << setw(4) << __LINE__ << ":[" #x "]: ", dump(x)
+#define deb(x...) cerr << setw(4) << __LINE__ << ":[" #x "]: ", [](auto... y) { (( cerr << y << ", " ), ...) << '\n'; }(x)
 #else
 #define deb(...) 0
 #endif
@@ -31,12 +30,9 @@ int32_t main() {
 
     int z = 1;
     // cin >> z;
-    rep(i, z) {
-        // cout << "Case #" << i + 1 << ": ";
-        solve();
-    }
+    rep(_, z) solve();
 
-    #ifdef LOC
+    #ifdef LOCF
     cout.flush(); cerr << "- - - - - - - - -\n";
     (void)!system("grep VmPeak /proc/$PPID/status | sed s/....kB/\' MB\'/1 >&2"); // 4x.kB ....kB
     #endif
