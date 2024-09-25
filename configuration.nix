@@ -122,23 +122,24 @@ in {
     # texlive.combined.scheme-full
   ];
 
-  systemd.services.conky-service = {
-    # Unit = {
-    #   Description = "Conky - Lightweight system monitor";
-    #   After = [ "graphical-session.target" ];
-    # };
-    serviceConfig = {
-      Type = "simple";
-      User = "kacper";
-      Restart = "always";
-      RestartSec = "1";
-      ExecStartPre = "${pkgs.coreutils}/bin/sleep 1";
-      ExecStart = "${pkgs.bash}/bin/bash -c ${pkgs.conky}/bin/conky";
-      # ExecStart = "sh -c \"${pkgs.conky}/bin/conky -c /etc/nixos/conky.conf\"";
-    };
-    after = [ "graphical-session.target" ];
-    wantedBy = [ "multi-user.target" ];
-  };
+  # systemd.services.conky-service = {
+  #   # Unit = {
+  #   #   Description = "Conky - Lightweight system monitor";
+  #   #   After = [ "graphical-session.target" ];
+  #   # };
+  #   serviceConfig = {
+  #     Type = "simple";
+  #     User = "kacper";
+  #     Restart = "always";
+  #     RestartSec = "1";
+  #     Environment = "PATH=/run/current-system/sw/bin/";
+  #     ExecStartPre = "${pkgs.coreutils}/bin/sleep 1";
+  #     ExecStart = "${pkgs.bash}/bin/bash -c ${pkgs.conky}/bin/conky";
+  #     # ExecStart = "sh -c \"${pkgs.conky}/bin/conky -c /etc/nixos/conky.conf\"";
+  #   };
+  #   after = [ "graphical-session.target" ];
+  #   wantedBy = [ "multi-user.target" ];
+  # };
 
   xdg.mime = {
     enable = true;
@@ -216,6 +217,18 @@ in {
 
   home-manager.useGlobalPkgs = true;
   home-manager.users.kacper = {
+    systemd.user.services.conky-service = {
+      Service = {
+        Restart = "always";
+        RestartSec = "1";
+        ExecStartPre = "${pkgs.coreutils}/bin/sleep 1";
+        ExecStart = "${pkgs.conky}/bin/conky -c /etc/nixos/conky.conf";
+      };
+
+      Unit.After = [ "graphical-session.target" ];
+      Install.WantedBy = [ "graphical-session.target" ];
+    };
+
     dconf.settings = {
       "org/cinnamon/desktop/keybindings/wm" = {
         switch-to-workspace-left = [ "<Primary><Super>Left" ];
