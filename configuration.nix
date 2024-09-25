@@ -244,6 +244,7 @@ in {
         ms-vscode-remote.remote-ssh
         mhutchie.git-graph
         jnoortheen.nix-ide
+        kt.homie-vscode
       ];
 
       userSettings = {

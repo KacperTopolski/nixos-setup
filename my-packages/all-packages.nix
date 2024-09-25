@@ -6,4 +6,5 @@
   upm = pkgs.callPackage ./upm { };
   cp-setup = pkgs.callPackage ./cp-setup { };
   utils = pkgs.callPackage ./utils { };
+  homie-vscode = pkgs.callPackage ./homie-vscode { };
 }

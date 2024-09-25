@@ -55,7 +55,7 @@ int main() {
 
     #ifdef LOCF
     auto start_time = chrono::high_resolution_clock::now();
-    assert(!isatty(STDOUT_FILENO));
+    assert(sz(interesting_cases) || !isatty(STDOUT_FILENO));
     for (int l = 1; l <= z;) {
         vector<Task> tasks(min(z - l + 1, (int)thread::hardware_concurrency()));
         vector<jthread> threads;
