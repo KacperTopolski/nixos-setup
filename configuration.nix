@@ -92,6 +92,14 @@ in {
 
   nixpkgs.config.allowUnfree = true;
 
+  # nixpkgs.overlays = [
+  #    (self: super: {
+  #      discord = super.discord.overrideAttrs (
+  #        _: { src = builtins.fetchTarball https://discord.com/api/download?platform=linux&format=tar.gz; }
+  #      );
+  #    })
+  # ];
+
   environment.systemPackages = with pkgs; [
     pciutils
     file
@@ -105,9 +113,10 @@ in {
     libgcc
     gcc
     jdk21
-    (python312.withPackages (p: [ p.sympy p.pip ]))
+    (python312.withPackages (p: [ p.sympy p.pip p.termcolor p.tqdm p.mypy p.types-tqdm ]))
     libreoffice
     ghidra
+    nasm
     discord
     vlc
     simple-scan
@@ -120,6 +129,8 @@ in {
     localsend
     dconf2nix
     # texlive.combined.scheme-full
+    google-chrome
+    cgal
   ];
 
   xdg.mime = {
@@ -153,7 +164,7 @@ in {
     ensurePrinters = [
       {
         name = "DCP-T500W";
-        deviceUri = "lpd://192.168.100.6/BINARY_P1";
+        deviceUri = "lpd://192.168.100.3/BINARY_P1";
         model = "brother_dcpt500w_printer_en.ppd";
       }
     ];
@@ -165,13 +176,13 @@ in {
     enable = true;
     netDevices = {
       brother = {
-        ip = "192.168.100.6";
+        ip = "192.168.100.3";
         model = "DCP-T500W";
       };
     };
   };
 
-  services.xserver.videoDrivers = ["nvidia"];
+  services.xserver.videoDrivers = [ "nvidia" ];
   hardware.nvidia.modesetting.enable = true;
   hardware.nvidia.prime = {
     sync.enable = true;
@@ -231,6 +242,10 @@ in {
         co = "checkout";
         st = "status";
       };
+      extraConfig = {
+        push.autoSetupRemote = true;
+        safe.directory = "*";
+      };
     };
     programs.vscode = {
       enable = true;
@@ -242,6 +257,8 @@ in {
       extensions = with pkgs.vscode-extensions; [
         ms-vscode.cpptools
         ms-vscode-remote.remote-ssh
+        ms-python.python
+        ms-python.vscode-pylance
         mhutchie.git-graph
         jnoortheen.nix-ide
         kt.homie-vscode

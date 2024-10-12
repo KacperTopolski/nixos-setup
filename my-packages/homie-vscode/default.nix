@@ -6,9 +6,9 @@
 
 let
   pname = "homie-vscode";
-  versionX = "0.1";
+  version = "0.1";
 
-  srcX = fetchFromGitHub {
+  src = fetchFromGitHub {
     owner = "MisieqqeisiM";
     repo = "homie-vscode";
     rev = "6ff1ce8";
@@ -16,11 +16,12 @@ let
   };
 in
 vscode-utils.buildVscodeExtension {
-  name = "${pname}-${versionX}";
-  src = srcX;
-  version = versionX;
+  name = "${pname}-${version}";
+  inherit version;
+  inherit src;
   vscodeExtUniqueId = pname;
   vscodeExtPublisher = pname;
   vscodeExtName = pname;
   setSourceRoot = "sourceRoot=.";
+  postInstall = "mv $out/share/vscode/extensions/${pname}/source/* $out/share/vscode/extensions/${pname}/";
 }
