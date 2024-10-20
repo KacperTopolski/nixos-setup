@@ -117,6 +117,7 @@ in {
     libreoffice
     ghidra
     nasm
+    gparted
     discord
     vlc
     simple-scan
@@ -130,8 +131,26 @@ in {
     dconf2nix
     # texlive.combined.scheme-full
     google-chrome
+    wine64
     cgal
+    kt.pdf-gear
+    jetbrains.idea-community-bin
   ];
+
+  fonts.packages = with pkgs; [
+    noto-fonts
+    noto-fonts-cjk
+    noto-fonts-emoji
+    liberation_ttf
+    fira-code
+    fira-code-symbols
+    mplus-outline-fonts.githubRelease
+    dina-font
+    proggyfonts
+    corefonts
+    vistafonts
+  ];
+
 
   xdg.mime = {
     enable = true;
@@ -148,11 +167,11 @@ in {
   # Enable CUPS to print documents.
   services.printing.enable = true;
   # services.printing.logLevel = "debug";
-  # services.avahi = {
-  #   enable = true;
-  #   nssmdns4 = true;
-  #   openFirewall = true;
-  # };
+  services.avahi = {
+    enable = true;
+    nssmdns4 = true;
+    openFirewall = true;
+  };
 
   # Printer
   services.printing.drivers = [
@@ -244,6 +263,7 @@ in {
       };
       extraConfig = {
         push.autoSetupRemote = true;
+        pull.rebase = true;
         safe.directory = "*";
       };
     };
