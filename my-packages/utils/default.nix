@@ -3,12 +3,12 @@
 let
   screentool = pkgs.writeShellScriptBin "screentool" ''
     loc=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c10)
-    ${pkgs.gnome.gnome-screenshot}/bin/gnome-screenshot -caf /tmp/$loc.png
+    ${pkgs.gnome-screenshot}/bin/gnome-screenshot -caf /tmp/$loc.png
     ls /tmp/$loc.png || exit
-    ${pkgs.cinnamon.xviewer}/bin/xviewer -n /tmp/$loc.png
+    ${pkgs.xviewer}/bin/xviewer -n /tmp/$loc.png
     rm /tmp/$loc.png
   '';
-  activate_state = pkgs.writeShellScriptBin "activate_state" ''
+  activate-state = pkgs.writeShellScriptBin "activate-state" ''
     state=/home/$USER/state
 
     rmdir ~/Desktop || rm ~/Desktop
@@ -26,5 +26,5 @@ let
   '';
 in symlinkJoin {
   name = "utils";
-  paths = [ screentool activate_state ];
+  paths = [ screentool activate-state ];
 }

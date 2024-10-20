@@ -51,6 +51,20 @@ in {
   # Enable the X11 windowing system.
   services.xserver.enable = true;
 
+  # nixpkgs.overlays = [ (final: prev: {
+  #   cinnamon = prev.cinnamon.overrideScope (cfinal: cprev: {
+  #     cinnamon-common = cprev.cinnamon-common.overrideAttrs (oldattrs: rec {
+  #       version = "6.2.9";
+  #       src = prev.fetchFromGitHub {
+  #         owner = "linuxmint";
+  #         repo = "cinnamon";
+  #         rev = version;
+  #         hash = "sha256-CW87zZogjdTOCp6mx5ctV6T9YQVQGo3yw0lPTkiCNkE=";
+  #       };
+  #     });
+  #   });
+  # })];
+
   # Enable the Cinnamon Desktop Environment.
   services.xserver.displayManager.lightdm.enable = true;
   services.xserver.desktopManager.cinnamon.enable = true;
@@ -91,14 +105,6 @@ in {
   programs.firefox.enable = true;
 
   nixpkgs.config.allowUnfree = true;
-
-  # nixpkgs.overlays = [
-  #    (self: super: {
-  #      discord = super.discord.overrideAttrs (
-  #        _: { src = builtins.fetchTarball https://discord.com/api/download?platform=linux&format=tar.gz; }
-  #      );
-  #    })
-  # ];
 
   environment.systemPackages = with pkgs; [
     pciutils
@@ -151,7 +157,6 @@ in {
     vistafonts
   ];
 
-
   xdg.mime = {
     enable = true;
     defaultApplications = {
@@ -159,7 +164,10 @@ in {
     };
   };
 
-  programs.vim.defaultEditor = true;
+  programs.vim = {
+    enable = true;
+    defaultEditor = true;
+  };
   programs.nix-ld.enable = true;
 
   virtualisation.docker.enable = true;
@@ -203,6 +211,7 @@ in {
 
   services.xserver.videoDrivers = [ "nvidia" ];
   hardware.nvidia.modesetting.enable = true;
+  hardware.nvidia.open = false;
   hardware.nvidia.prime = {
     sync.enable = true;
     # offload = {
@@ -227,6 +236,7 @@ in {
   programs.gamemode.enable = true;
 
   home-manager.useGlobalPkgs = true;
+  # home-manager.extraSpecialArgs = { inherit unstable };
   home-manager.users.kacper = {
     systemd.user.services.conky-service = {
       Service = {
