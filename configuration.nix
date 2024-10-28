@@ -119,6 +119,7 @@ in {
     libgcc
     gcc
     jdk21
+    jdk17
     (python312.withPackages (p: [ p.sympy p.pip p.termcolor p.tqdm p.mypy p.types-tqdm ]))
     libreoffice
     ghidra
@@ -135,10 +136,9 @@ in {
     libsForQt5.booth
     localsend
     dconf2nix
-    # texlive.combined.scheme-full
+    texlive.combined.scheme-full
     google-chrome
     wine64
-    cgal
     kt.pdf-gear
     jetbrains.idea-community-bin
   ];
@@ -163,6 +163,14 @@ in {
       "inode/directory" = [ "nemo.desktop" ];
     };
   };
+
+  programs.fish = {
+    enable = true;
+    interactiveShellInit = ''
+      ${pkgs.any-nix-shell}/bin/any-nix-shell fish --info-right | source
+    '';
+  };
+  users.defaultUserShell = pkgs.fish;
 
   programs.vim = {
     enable = true;
@@ -238,6 +246,7 @@ in {
   home-manager.useGlobalPkgs = true;
   # home-manager.extraSpecialArgs = { inherit unstable };
   home-manager.users.kacper = {
+
     systemd.user.services.conky-service = {
       Service = {
         Restart = "always";
@@ -263,6 +272,7 @@ in {
         name = "screentool";
       };
     };
+
     programs.git = {
       enable = true;
       userName  = "Kacper Topolski";
