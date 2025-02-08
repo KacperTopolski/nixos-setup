@@ -8,5 +8,4 @@
   utils = pkgs.callPackage ./utils { };
   pdf-gear = pkgs.callPackage ./pdf-gear { };
   homie-vscode = pkgs.callPackage ./homie-vscode { };
-  # temurin-bin = (import ./temurin-bin/default.nix) {stdenv=pkgs.stdenv; lib=pkgs.lib; callPackage=pkgs.callPackage;};
 }

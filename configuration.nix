@@ -120,11 +120,19 @@ in {
     libgcc
     gcc
     jdk17
-    # kt.temurin-bin.jdk-17
+
+    cargo
+    rustc
+    libiconv
+    openssl
+    pkg-config
+    btop
+
     (python312.withPackages (p: [ p.sympy p.pip p.termcolor p.tqdm p.mypy p.types-tqdm p.requests ]))
     libreoffice
     ghidra
     nasm
+    gdb
     gparted
     discord
     vlc
@@ -133,6 +141,7 @@ in {
     kt.cp-setup
     kt.utils
     mangohud
+    transmission_3-qt
     protonup # you have to run this
     libsForQt5.booth
     localsend
