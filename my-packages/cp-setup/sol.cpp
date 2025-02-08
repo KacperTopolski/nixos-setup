@@ -12,10 +12,11 @@ using pii = pair<int, int>; using vi = vector<int>;
 using ll = long long; using ld = long double;
 #ifdef LOC
 auto SS = signal(6, [](int) { *(int *)0 = 0; });
-#define DTP(x, y) auto operator << (auto &o, auto a) -> decltype(y, o) { o << "("; x; return o << ")"; }
+#define DTP(x, y) auto operator<<(auto &o, auto a) -> decltype(y, o) { o << "("; x; return o << ")"; }
+auto operator<<(auto &o, auto a) -> decltype(all(a), o);
 DTP(o << a.st << ", " << a.nd, a.nd);
 DTP(for (auto i : a) o << i << ", ", all(a));
-#define deb(x...) cerr << setw(4) << __LINE__ << ":[" #x "]: ", [](auto... y) { (( cerr << y << ", " ), ...) << '\n'; }(x)
+#define deb(x...) cerr << setw(4) << __LINE__ << ":[" #x "]: ", [](auto... arg_) { (( cerr << arg_ << ", " ), ...) << '\n'; }(x)
 #else
 #define deb(...) 0
 #endif
@@ -31,11 +32,6 @@ int32_t main() {
     int z = 1;
     // cin >> z;
     rep(_, z) solve();
-
-    #ifdef LOCF
-    cout.flush(); cerr << "- - - - - - - - -\n";
-    (void)!system("grep VmPeak /proc/$PPID/status | sed s/....kB/\' MB\'/1 >&2"); // 4x.kB ....kB
-    #endif
 
     cout << flush;
     _Exit(0);

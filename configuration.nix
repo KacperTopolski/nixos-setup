@@ -6,7 +6,7 @@
 
 let
   kt = import ./my-packages/all-packages.nix pkgs;
-  home-manager = builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/release-24.05.tar.gz";
+  home-manager = builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/master.tar.gz";
 in {
   imports = [
     ./hardware-configuration.nix
@@ -45,7 +45,7 @@ in {
     LC_NUMERIC = "pl_PL.UTF-8";
     LC_PAPER = "pl_PL.UTF-8";
     LC_TELEPHONE = "pl_PL.UTF-8";
-    LC_TIME = "pl_PL.UTF-8";
+    LC_TIME = "en_US.UTF-8";
   };
 
   # Enable the X11 windowing system.
@@ -107,6 +107,7 @@ in {
   nixpkgs.config.allowUnfree = true;
 
   environment.systemPackages = with pkgs; [
+    nbfc-linux
     pciutils
     file
     htop
@@ -118,9 +119,9 @@ in {
     gnumake
     libgcc
     gcc
-    jdk21
     jdk17
-    (python312.withPackages (p: [ p.sympy p.pip p.termcolor p.tqdm p.mypy p.types-tqdm ]))
+    # kt.temurin-bin.jdk-17
+    (python312.withPackages (p: [ p.sympy p.pip p.termcolor p.tqdm p.mypy p.types-tqdm p.requests ]))
     libreoffice
     ghidra
     nasm
@@ -141,11 +142,12 @@ in {
     wine64
     kt.pdf-gear
     jetbrains.idea-community-bin
+    jetbrains.rust-rover
   ];
 
   fonts.packages = with pkgs; [
     noto-fonts
-    noto-fonts-cjk
+    noto-fonts-cjk-sans
     noto-fonts-emoji
     liberation_ttf
     fira-code
@@ -245,7 +247,7 @@ in {
 
   home-manager.useGlobalPkgs = true;
   # home-manager.extraSpecialArgs = { inherit unstable };
-  home-manager.users.kacper = {
+  home-manager.users.kacper = {config, pkgs, ...}: {
 
     systemd.user.services.conky-service = {
       Service = {
@@ -302,6 +304,7 @@ in {
         mhutchie.git-graph
         jnoortheen.nix-ide
         kt.homie-vscode
+        ms-vsliveshare.vsliveshare
       ];
 
       userSettings = {
@@ -336,6 +339,10 @@ in {
 
     };
 
+    home.file = {
+      ".factorio".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/state/factorio";
+    };
+
     home.stateVersion = "24.05";
   };
 
@@ -353,8 +360,8 @@ in {
   # services.openssh.enable = true;
 
   # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
+  networking.firewall.allowedTCPPorts = [ 53317 ];
+  networking.firewall.allowedUDPPorts = [ 53317 ]; #localsend
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
 

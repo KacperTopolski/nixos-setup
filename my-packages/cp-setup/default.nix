@@ -5,6 +5,7 @@ let
     for var in "$@"
     do
       cat ${./sol.cpp} > $var.cpp
+      touch $var.in
     done
   '';
   cphc = pkgs.writeShellScriptBin "cphc" ''
@@ -32,14 +33,12 @@ let
     cd $out/bits
     cp ${bits_file}/stdc++.h .
     ${c_command} stdc++.h || true
-    rm stdc++.h
   '';
   cf_bits = pkgs.runCommand "cf_bits" {} ''
     mkdir -p $out/bits
     cd $out/bits
     cp ${bits_file}/stdc++.h .
     ${cf_command} stdc++.h || true
-    rm stdc++.h
   '';
   c = pkgs.writeShellScriptBin "c" "${c_command} -I${c_bits} $1.cpp -o$1";
   cf = pkgs.writeShellScriptBin "cf" "${cf_command} -I${cf_bits} $1.cpp -o$1";
