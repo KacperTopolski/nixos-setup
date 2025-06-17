@@ -119,7 +119,7 @@ in {
     gnumake
     libgcc
     gcc
-    jdk17
+    # jdk17
 
     cargo
     rustc
@@ -128,11 +128,11 @@ in {
     pkg-config
     btop
 
-    (python312.withPackages (p: [ p.sympy p.pip p.termcolor p.tqdm p.mypy p.types-tqdm p.requests ]))
+    (python312.withPackages (p: [ p.sympy p.pip p.termcolor p.tqdm p.mypy p.types-tqdm p.requests p.numpy p.matplotlib ]))
     libreoffice
     ghidra
-    nasm
-    gdb
+    # nasm
+    # gdb
     gparted
     discord
     vlc
@@ -150,9 +150,15 @@ in {
     google-chrome
     wine64
     kt.pdf-gear
-    jetbrains.idea-community-bin
+    # jetbrains.idea-community-bin
     jetbrains.rust-rover
+    prismlauncher
   ];
+
+  programs.java = {
+    enable = true;
+    package = (pkgs.jdk21.override { enableJavaFX = true; });
+  };
 
   fonts.packages = with pkgs; [
     noto-fonts
@@ -210,7 +216,7 @@ in {
     ensurePrinters = [
       {
         name = "DCP-T500W";
-        deviceUri = "lpd://192.168.100.3/BINARY_P1";
+        deviceUri = "lpd://192.168.100.4/BINARY_P1";
         model = "brother_dcpt500w_printer_en.ppd";
       }
     ];
@@ -222,7 +228,7 @@ in {
     enable = true;
     netDevices = {
       brother = {
-        ip = "192.168.100.3";
+        ip = "192.168.100.4";
         model = "DCP-T500W";
       };
     };
