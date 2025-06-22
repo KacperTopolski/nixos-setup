@@ -6,7 +6,7 @@
 
 let
   kt = import ./my-packages/all-packages.nix pkgs;
-  home-manager = builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/master.tar.gz";
+  home-manager = builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/release-24.11.tar.gz";
 in {
   imports = [
     ./hardware-configuration.nix
@@ -68,6 +68,14 @@ in {
   # Enable the Cinnamon Desktop Environment.
   services.xserver.displayManager.lightdm.enable = true;
   services.xserver.desktopManager.cinnamon.enable = true;
+  # services.xserver.desktopManager.plasma5.enable = true;
+  # services.xserver.displayManager.sddm.enable = true;
+
+  # hardware.bluetooth = {
+  #   enable = true;
+  #   powerOnBoot = true;
+  # };
+  # services.blueman.enable = true;
 
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -238,11 +246,11 @@ in {
   hardware.nvidia.modesetting.enable = true;
   hardware.nvidia.open = false;
   hardware.nvidia.prime = {
-    sync.enable = true;
-    # offload = {
-    #   enable = true;
-    #   enableOffloadCmd = true;
-    # };
+    # sync.enable = true;
+    offload = {
+      enable = true;
+      enableOffloadCmd = true;
+    };
     intelBusId = "PCI:0:2:0";
     nvidiaBusId = "PCI:1:0:0";
   };
