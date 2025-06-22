@@ -24,6 +24,9 @@
       command = "screentool";
       name = "screentool";
     };
+    "org/cinnamon/desktop/keybindings" = {
+      custom-list = [ "custom0" ];
+    };
   };
 
   programs.git = {
@@ -41,53 +44,13 @@
     };
   };
 
-  programs.vscode = {
-    enable = true;
-    enableUpdateCheck = false;
-    enableExtensionUpdateCheck = false;
-    mutableExtensionsDir = false;
-    # Extensions
-    extensions = with pkgs.vscode-extensions; [
-      ms-vscode.cpptools
-      ms-vscode-remote.remote-ssh
-      ms-python.python
-      ms-python.vscode-pylance
-      mhutchie.git-graph
-      jnoortheen.nix-ide
-      ms-vsliveshare.vsliveshare
-    ];
-    userSettings = {
-      "editor.fontSize" = 12;
-      "editor.fontFamily" = "'Jetbrains Mono', 'monospace', monospace";
-      "terminal.integrated.fontSize" = 12;
-      "terminal.integrated.fontFamily" = "'JetBrainsMono Nerd Font', 'monospace', monospace";
-      "window.zoomLevel" = 1;
-      "workbench.startupEditor" = "none";
-      "explorer.compactFolders" = false;
-      "files.trimTrailingWhitespace" = true;
-      "files.trimFinalNewlines" = true;
-      "files.insertFinalNewline" = true;
-      "diffEditor.ignoreTrimWhitespace" = false;
-      "extensions.ignoreRecommendations" = true;
-      "editor.selectionClipboard" = false;
-      "C_Cpp.default.cppStandard" = "c++23";
-    };
-    keybindings = [
-      {
-        key = "ctrl+c";
-        command = "workbench.action.terminal.copySelection";
-        when = "terminalFocus && terminalProcessSupported && terminalTextSelected";
-      }
-      {
-        key = "ctrl+v";
-        command = "workbench.action.terminal.paste";
-        when = "terminalFocus && terminalProcessSupported";
-      }
-    ];
-  };
+  programs.vscode = import ./vscode.nix pkgs;
 
   home.file = {
     ".factorio".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/state/factorio";
+    ".ssh".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/state/ssh";
+    "Desktop".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/state/desktop";
+    ".local/share/fish".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/state/fish";
   };
 
   home.stateVersion = "25.05";

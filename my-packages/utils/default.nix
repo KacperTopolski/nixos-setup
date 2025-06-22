@@ -8,21 +8,7 @@ let
     ${pkgs.xviewer}/bin/xviewer -n /tmp/$loc.png
     rm /tmp/$loc.png
   '';
-  activate-state = pkgs.writeShellScriptBin "activate-state" ''
-    state=/home/$USER/state
-
-    rmdir ~/Desktop || rm ~/Desktop
-    rmdir ~/.ssh || rm ~/.ssh
-    sudo rmdir /etc/nixos || sudo rm /etc/nixos
-    sudo rmdir /state || sudo rm /state
-
-    ln -s $state/desktop ~/Desktop
-    ln -s $state/dotfiles/.ssh ~/.ssh
-    sudo ln -s $state/nixos /etc/nixos
-    sudo chmod 777 /etc/nixos
-    sudo ln -s $state /state
-  '';
 in symlinkJoin {
   name = "utils";
-  paths = [ screentool activate-state ];
+  paths = [ screentool ];
 }
