@@ -7,5 +7,4 @@
   cp-setup = pkgs.callPackage ./cp-setup { };
   utils = pkgs.callPackage ./utils { };
   pdf-gear = pkgs.callPackage ./pdf-gear { };
-  homie-vscode = pkgs.callPackage ./homie-vscode { };
 }

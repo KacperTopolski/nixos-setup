@@ -104,7 +104,7 @@ in {
   nixpkgs.config.allowUnfree = true;
 
   environment.systemPackages = with pkgs; [
-    nbfc-linux
+    lm_sensors
     pciutils
     file
     htop
@@ -298,7 +298,6 @@ in {
         ms-python.vscode-pylance
         mhutchie.git-graph
         jnoortheen.nix-ide
-        #kt.homie-vscode
         ms-vsliveshare.vsliveshare
       ];
 
