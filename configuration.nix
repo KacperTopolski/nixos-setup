@@ -2,11 +2,14 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+inputs: { config, pkgs, ... }:
 
 let
   kt = import ./my-packages/all-packages.nix pkgs;
-  home-manager = builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/release-24.11.tar.gz";
+  home-manager = builtins.fetchTarball {
+    url = "https://github.com/nix-community/home-manager/archive/release-25.05.tar.gz";
+    sha256 = "1mwq9mzyw1al03z4q2ifbp6d0f0sx9f128xxazwrm62z0rcgv4na";
+  };
 in {
   imports = [
     ./hardware-configuration.nix
@@ -45,37 +48,15 @@ in {
     LC_NUMERIC = "pl_PL.UTF-8";
     LC_PAPER = "pl_PL.UTF-8";
     LC_TELEPHONE = "pl_PL.UTF-8";
-    LC_TIME = "en_US.UTF-8";
+    LC_TIME = "pl_PL.UTF-8";
   };
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
 
-  # nixpkgs.overlays = [ (final: prev: {
-  #   cinnamon = prev.cinnamon.overrideScope (cfinal: cprev: {
-  #     cinnamon-common = cprev.cinnamon-common.overrideAttrs (oldattrs: rec {
-  #       version = "6.2.9";
-  #       src = prev.fetchFromGitHub {
-  #         owner = "linuxmint";
-  #         repo = "cinnamon";
-  #         rev = version;
-  #         hash = "sha256-CW87zZogjdTOCp6mx5ctV6T9YQVQGo3yw0lPTkiCNkE=";
-  #       };
-  #     });
-  #   });
-  # })];
-
   # Enable the Cinnamon Desktop Environment.
   services.xserver.displayManager.lightdm.enable = true;
   services.xserver.desktopManager.cinnamon.enable = true;
-  # services.xserver.desktopManager.plasma5.enable = true;
-  # services.xserver.displayManager.sddm.enable = true;
-
-  # hardware.bluetooth = {
-  #   enable = true;
-  #   powerOnBoot = true;
-  # };
-  # services.blueman.enable = true;
 
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -83,20 +64,29 @@ in {
     variant = "";
   };
 
-  console.keyMap = "pl2";
+  # Enable CUPS to print documents.
+  services.printing.enable = true;
 
-  hardware.pulseaudio.enable = false;
+  # Enable sound with pipewire.
+  services.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
+    # If you want to use JACK applications, uncomment this
+    #jack.enable = true;
+
+    # use the example session manager (no others are packaged yet so this is enabled by default,
+    # no need to redefine it in your config for now)
+    #media-session.enable = true;
   };
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
+  # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.kacper = {
     isNormalUser = true;
     description = "kacper";
@@ -106,7 +96,6 @@ in {
     ];
   };
 
-  # Enable automatic login for the user.
   services.displayManager.autoLogin.enable = true;
   services.displayManager.autoLogin.user = "kacper";
 
@@ -127,7 +116,6 @@ in {
     gnumake
     libgcc
     gcc
-    # jdk17
 
     cargo
     rustc
@@ -182,13 +170,6 @@ in {
     vistafonts
   ];
 
-  xdg.mime = {
-    enable = true;
-    defaultApplications = {
-      "inode/directory" = [ "nemo.desktop" ];
-    };
-  };
-
   programs.fish = {
     enable = true;
     interactiveShellInit = ''
@@ -204,15 +185,6 @@ in {
   programs.nix-ld.enable = true;
 
   virtualisation.docker.enable = true;
-
-  # Enable CUPS to print documents.
-  services.printing.enable = true;
-  # services.printing.logLevel = "debug";
-  services.avahi = {
-    enable = true;
-    nssmdns4 = true;
-    openFirewall = true;
-  };
 
   # Printer
   services.printing.drivers = [
@@ -268,8 +240,8 @@ in {
   };
   programs.gamemode.enable = true;
 
+  home-manager.backupFileExtension = "backup";
   home-manager.useGlobalPkgs = true;
-  # home-manager.extraSpecialArgs = { inherit unstable };
   home-manager.users.kacper = {config, pkgs, ...}: {
 
     systemd.user.services.conky-service = {
@@ -326,7 +298,7 @@ in {
         ms-python.vscode-pylance
         mhutchie.git-graph
         jnoortheen.nix-ide
-        kt.homie-vscode
+        #kt.homie-vscode
         ms-vsliveshare.vsliveshare
       ];
 
@@ -366,7 +338,7 @@ in {
       ".factorio".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/state/factorio";
     };
 
-    home.stateVersion = "24.05";
+    home.stateVersion = "25.05";
   };
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -394,6 +366,6 @@ in {
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "24.05"; # Did you read the comment?
+  system.stateVersion = "25.05"; # Did you read the comment?
 
 }

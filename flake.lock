@@ -1,0 +1,48 @@
+{
+  "nodes": {
+    "fixed-gt": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1750119880,
+        "narHash": "sha256-P649bIwF0hE4CsHJPKY0/2D/yDNjYcpLlK1Rw26WhPM=",
+        "owner": "KacperTopolski",
+        "repo": "vte-ctrl-c-patch",
+        "rev": "a03b7386a4b8c385fee16b9d9fe2bb18491087fd",
+        "type": "github"
+      },
+      "original": {
+        "owner": "KacperTopolski",
+        "repo": "vte-ctrl-c-patch",
+        "type": "github"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1750400657,
+        "narHash": "sha256-3vkjFnxCOP6vm5Pm13wC/Zy6/VYgei/I/2DWgW4RFeA=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "b2485d56967598da068b5a6946dadda8bfcbcd37",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-25.05",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "root": {
+      "inputs": {
+        "fixed-gt": "fixed-gt",
+        "nixpkgs": "nixpkgs"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}
