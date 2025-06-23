@@ -2,11 +2,13 @@
 
 let
   screentool = pkgs.writeShellScriptBin "screentool" ''
-    loc=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c10)
-    ${pkgs.gnome-screenshot}/bin/gnome-screenshot -caf /tmp/$loc.png
-    ls /tmp/$loc.png || exit
-    ${pkgs.xviewer}/bin/xviewer -n /tmp/$loc.png
-    rm /tmp/$loc.png
+    loc=/tmp/$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c10).png
+    ${pkgs.imagemagick}/bin/import -window root $loc
+    ${pkgs.feh}/bin/feh --fullscreen $loc &
+    ${pkgs.gnome-screenshot}/bin/gnome-screenshot -af $loc
+    kill $!
+    ${pkgs.xclip}/bin/xclip -selection clipboard -t image/png -i $loc
+    ${pkgs.xviewer}/bin/xviewer -n $loc
   '';
 in symlinkJoin {
   name = "utils";

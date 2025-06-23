@@ -135,6 +135,7 @@ in {
     vistafonts
   ];
 
+  documentation.man.generateCaches = false;
   programs.fish = {
     enable = true;
     interactiveShellInit = ''
