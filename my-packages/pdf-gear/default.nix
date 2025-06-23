@@ -1,4 +1,4 @@
-{ pkgs, lib, stdenv, writers, fetchurl, makeWrapper, ant, icoutils, makeDesktopItem, copyDesktopItems }:
+{ pkgs, lib, stdenv, writers, requireFile, makeWrapper, ant, icoutils, makeDesktopItem, copyDesktopItems }:
 
 stdenv.mkDerivation rec {
   pname = "pdf-gear";
@@ -6,9 +6,10 @@ stdenv.mkDerivation rec {
 
   nativeBuildInputs = [ pkgs.wine64 makeWrapper icoutils copyDesktopItems ];
 
-  src = fetchurl {
-    url = "file://${/state/bin/PDFgear-${version}.tar.gz}";
-    sha256 = "sha256-5RAy7f9cZCegdy/e8AtsHCiyXiNxZgJRD6Gvj8/0uNo=";
+  src = requireFile {
+    name = "PDFgear-${version}.tar.gz";
+    sha256 = "5RAy7f9cZCegdy/e8AtsHCiyXiNxZgJRD6Gvj8/0uNo=";
+    url = "";
   };
 
   installPhase = ''
