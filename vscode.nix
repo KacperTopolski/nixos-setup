@@ -14,6 +14,7 @@ pkgs:
       mhutchie.git-graph
       jnoortheen.nix-ide
       ms-vsliveshare.vsliveshare
+      grapecity.gc-excelviewer
     ];
     userSettings = {
       "editor.fontSize" = 12;

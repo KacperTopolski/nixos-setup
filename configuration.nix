@@ -13,7 +13,13 @@ in {
 
   nix.settings.experimental-features = "nix-command flakes";
 
-  boot.loader.systemd-boot.enable = true;
+  boot.loader.grub = {
+    enable = true;
+    efiSupport = true;
+    devices = [ "nodev" ];
+    useOSProber = true;
+  };
+
   boot.loader.efi.canTouchEfiVariables = true;
   boot.supportedFilesystems = [ "ntfs" ];
 
@@ -67,6 +73,10 @@ in {
   programs.firefox.enable = true;
 
   nixpkgs.config.allowUnfree = true;
+
+  nixpkgs.overlays = [
+    inputs.fixed-gt.overlays.default
+  ];
 
   environment.systemPackages = with pkgs; [
     lm_sensors
@@ -215,3 +225,7 @@ in {
 # protonup
 # sudo nix-channel --add https://nixos.org/channels/nixos-unstable nixos
 # sudo nix-channel --update
+
+
+#todo: gnome terminal overlay
+#todo2: nixos hardware

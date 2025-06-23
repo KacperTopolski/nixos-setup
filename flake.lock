@@ -7,11 +7,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1750119880,
-        "narHash": "sha256-P649bIwF0hE4CsHJPKY0/2D/yDNjYcpLlK1Rw26WhPM=",
+        "lastModified": 1750716726,
+        "narHash": "sha256-m+SPHTHkInEAinFXolXMcGhbJLd/qRH+/zbRwO8P4Jw=",
         "owner": "KacperTopolski",
         "repo": "vte-ctrl-c-patch",
-        "rev": "a03b7386a4b8c385fee16b9d9fe2bb18491087fd",
+        "rev": "b41011cfa64fe793a8e7a0b3e93ffd700359fe9e",
         "type": "github"
       },
       "original": {

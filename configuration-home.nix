@@ -51,6 +51,8 @@
     ".ssh".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/state/ssh";
     "Desktop".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/state/desktop";
     ".local/share/fish".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/state/fish";
+    ".mozilla".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/state/firefox-data";
+    ".local/share/Steam/steamapps/compatdata/1687950/pfx/drive_c/users/steamuser/AppData/Roaming/SEGA/P5R/Steam/76561198123132925".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/state/persona5royal/appdata";
   };
 
   home.stateVersion = "25.05";
